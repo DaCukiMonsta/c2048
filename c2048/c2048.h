@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include <assert.h>
 
 #define BOARD_SIZE 4
 #define GAME_BASE  2
