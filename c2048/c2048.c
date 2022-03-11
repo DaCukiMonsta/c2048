@@ -280,7 +280,7 @@ BOOLEAN will_any_merge(MOVE_DIRECTION direction){
 						return true;
 				}
 			}
-			return false;
+			break;
 		case LEFT:
 			for(row=0; row<BOARD_SIZE; row++){
 				for(col=1; col<BOARD_SIZE;col++){
@@ -289,7 +289,7 @@ BOOLEAN will_any_merge(MOVE_DIRECTION direction){
 						return true;
 				}
 			}
-			return false;
+			break;
 		case DOWN:
 			for(col=0; col<BOARD_SIZE; col++){
 				for(row=BOARD_SIZE-2; row>=0;row--){
@@ -298,7 +298,7 @@ BOOLEAN will_any_merge(MOVE_DIRECTION direction){
 						return true;
 				}
 			}
-			return false;
+			break;
 		case RIGHT:
 			for(row=0; row<BOARD_SIZE; row++){
 				for(col=BOARD_SIZE-2; col>=0;col--){
@@ -307,8 +307,9 @@ BOOLEAN will_any_merge(MOVE_DIRECTION direction){
 						return true;
 				}
 			}
-			return false;
+			break;
 	};
+	return false;
 }
 
 BOOLEAN will_any_move(MOVE_DIRECTION direction){
@@ -326,7 +327,7 @@ BOOLEAN will_any_move(MOVE_DIRECTION direction){
 						return true;
 				}
 			}
-			return false;
+			break;
 		case LEFT:
 			for(row=0; row<BOARD_SIZE; row++){
 				BOOLEAN found_empty = false;
@@ -337,7 +338,7 @@ BOOLEAN will_any_move(MOVE_DIRECTION direction){
 						return true;
 				}
 			}
-			return false;
+			break;
 		case DOWN:
 			for(col=0; col<BOARD_SIZE; col++){
 				BOOLEAN found_empty = false;
@@ -348,7 +349,7 @@ BOOLEAN will_any_move(MOVE_DIRECTION direction){
 						return true;
 				}
 			}
-			return false;
+			break;
 		case RIGHT:
 			for(row=0; row<BOARD_SIZE; row++){
 				BOOLEAN found_empty = false;
@@ -359,8 +360,9 @@ BOOLEAN will_any_move(MOVE_DIRECTION direction){
 						return true;
 				}
 			}
-			return false;
+			break;
 	};
+	return false;
 }
 
 BOOLEAN any_valid_moves(void){
