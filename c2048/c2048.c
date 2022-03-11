@@ -1,5 +1,5 @@
-// c2048.cpp : Defines the entry point for the console application.
-//
+// c2048: An implementation of the game 2048 in C89/C++
+// by DaCukiMonsta
 
 #include <stdio.h>
 #include <string.h>
