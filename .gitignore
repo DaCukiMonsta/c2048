@@ -1,0 +1,7 @@
+*.sdf
+*.suo
+*.user
+Debug/*
+Release/*
+c2048/Debug/*
+c2048/Release/*
