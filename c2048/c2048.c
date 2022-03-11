@@ -15,37 +15,59 @@ int main(int argc, char* argv[])
 	// game loop
 	for(;;){
 		char input;
-		MOVE_DIRECTION direction;
+		MOVE_DIRECTION direction = INVALID_DIRECTION;
 
 		display_board();
 		printf(">");
 		input = getch_raw();
-		if(input == 0 || input == -32) // if this is escape then getch again for arrow key
-			input = getch_raw();
-		printf("\n");
-		direction = INVALID_DIRECTION;
-		switch(input){
-			case 'W':
-			case 'w':
-			case KEY_ARROW_UP:
-				direction = UP;
-				break;
-			case 'A':
-			case 'a':
-			case KEY_ARROW_LEFT:
-				direction = LEFT;
-				break;
-			case 'S':
-			case 's':
-			case KEY_ARROW_DOWN:
-				direction = DOWN;
-				break;
-			case 'D':
-			case 'd':
-			case KEY_ARROW_RIGHT:
-				direction = RIGHT;
-				break;
+
+		if(input == KEY_ARROW_ESCAPE
+#ifdef KEY_ARROW_ESCAPE_NUMPAD
+			|| input == KEY_ARROW_ESCAPE_NUMPAD
+#endif
+			){
+#ifdef KEY_ARROW_TWO_ESCAPES
+			(void) getch_raw(); // consume an extra escape character on this system
+#endif
+			input = getch_raw(); // get arrow key
+			// this needs to be a separate switch because KEY_ARROW_x could be another valid key
+			// it's only given context as an arrow key from the previous escape chars
+			switch(input){
+				case KEY_ARROW_UP:
+					direction = UP;
+					break;
+				case KEY_ARROW_LEFT:
+					direction = LEFT;
+					break;
+				case KEY_ARROW_DOWN:
+					direction = DOWN;
+					break;
+				case KEY_ARROW_RIGHT:
+					direction = RIGHT;
+					break;
+			}
 		}
+		else
+			switch(input){
+				case 'W':
+				case 'w':
+					direction = UP;
+					break;
+				case 'A':
+				case 'a':
+					direction = LEFT;
+					break;
+				case 'S':
+				case 's':
+					direction = DOWN;
+					break;
+				case 'D':
+				case 'd':
+					direction = RIGHT;
+					break;
+			}
+		
+		printf("\n");
 
 		// check if move is possible
 		if(!is_move_valid(direction)) direction = INVALID_DIRECTION;
