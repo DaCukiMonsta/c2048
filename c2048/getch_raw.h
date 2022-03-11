@@ -12,7 +12,9 @@
 #define KEY_ARROW_LEFT 75
 #define KEY_ARROW_DOWN 80
 #define KEY_ARROW_RIGHT 77
-#else
+
+#elif defined (__unix__) || (defined (__APPLE__) && defined (__MACH__))
+
 #include <termios.h>
 
 #define KEY_ARROW_ESCAPE 27
@@ -22,6 +24,11 @@
 #define KEY_ARROW_LEFT 68
 #define KEY_ARROW_DOWN 66
 #define KEY_ARROW_RIGHT 67
+
+#else
+
+#error "System is not supported."
+
 #endif
 
 char getch_raw(void);
