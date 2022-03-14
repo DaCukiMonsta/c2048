@@ -1,7 +1,9 @@
 #include "getch_raw.h"
 #include <stdio.h>
 
+#if defined (__unix__) || (defined (__APPLE__) && defined (__MACH__))
 struct termios old_settings, new_settings;
+#endif
 
 char getch_raw(){
 #ifdef _WIN32
