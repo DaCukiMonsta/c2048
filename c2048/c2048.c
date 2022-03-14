@@ -87,6 +87,7 @@ int main(int argc, char* argv[])
 	display_board();
 	printf("\a\nGame over.\nYou scored %lu! Press any key to exit.\n", score);
 	(void) getch_raw(); /* wait for key */
+	(void) end_getch_raw(); /* return terminal state */
 	return 0;
 }
 

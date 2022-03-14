@@ -33,5 +33,6 @@
 
 char getch_raw(void);
 void init_getch_raw(void);
+void end_getch_raw(void);
 
 #endif /* GETCH_RAW_H */
