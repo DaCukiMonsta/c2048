@@ -6,6 +6,10 @@
 #include <time.h>
 #include <assert.h>
 
+#ifdef __GNUC__
+#define static_assert _Static_assert /* gcc doesn't have this for c89 */
+#endif
+
 #define BOARD_SIZE 4
 #define GAME_BASE  2
 #define PAD_WIDTH  4
