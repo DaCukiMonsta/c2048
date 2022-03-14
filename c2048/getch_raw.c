@@ -10,8 +10,8 @@ char getch_raw(){
 }
 
 void init_getch_raw(void){
-#if defined (__unix__) || (defined (__APPLE__) && defined (__MACH__)) // only these systems need init
-	// based on niko's answer on https://stackoverflow.com/a/7469410
+#if defined (__unix__) || (defined (__APPLE__) && defined (__MACH__)) /* only these systems need init */
+	/* based on niko's answer on https://stackoverflow.com/a/7469410 */
 	struct termios settings;
 	tcgetattr(0, &settings); /* grab old terminal i/o settings */
 	settings.c_lflag &= ~ICANON; /* disable buffered i/o */

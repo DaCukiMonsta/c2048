@@ -1,5 +1,5 @@
-// c2048: An implementation of the game 2048 in C89
-// by DaCukiMonsta
+/* c2048: An implementation of the game 2048 in C89 */
+/* by DaCukiMonsta */
 
 #include <stdio.h>
 #include <string.h>
@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 	init_getch_raw();
 	setup_game();
 
-	// game loop
+	/* game loop */
 	for(;;){
 		char input;
 		MOVE_DIRECTION direction = INVALID_DIRECTION;
@@ -27,11 +27,11 @@ int main(int argc, char* argv[])
 #endif
 			){
 #ifdef KEY_ARROW_TWO_ESCAPES
-			(void) getch_raw(); // consume an extra escape character on this system
+			(void) getch_raw(); /* consume an extra escape character on this system */
 #endif
-			input = getch_raw(); // get arrow key
-			// this needs to be a separate switch because KEY_ARROW_x could be another valid key
-			// it's only given context as an arrow key from the previous escape chars
+			input = getch_raw(); /* get arrow key */
+			/* this needs to be a separate switch because KEY_ARROW_x could be another valid key */
+			/* it's only given context as an arrow key from the previous escape chars */
 			switch(input){
 				case KEY_ARROW_UP:
 					direction = UP;
@@ -69,37 +69,37 @@ int main(int argc, char* argv[])
 		
 		printf("\n");
 
-		// check if move is possible
+		/* check if move is possible */
 		if(!is_move_valid(direction)) direction = INVALID_DIRECTION;
 
-		// move
+		/* move */
 		if(direction==INVALID_DIRECTION){
 			printf("\a\nInvalid direction. Please try again.\n");
 			continue;
 		}
 		move_board(direction, NULL, &score);
 
-		(void) add_random_tile(); // add a tile now we have made a move
-		if(count_present_tiles() == BOARD_AREA && !any_valid_moves()) break; // if board is full and nothing can be merged, exit
+		(void) add_random_tile(); /* add a tile now we have made a move */
+		if(count_present_tiles() == BOARD_AREA && !any_valid_moves()) break; /* if board is full and nothing can be merged, exit */
 	}
 
-	// end
+	/* end */
 	display_board();
 	printf("\a\nGame over.\nYou scored %lu! Press any key to exit.", score);
-	(void) getch_raw(); // wait for key
+	(void) getch_raw(); /* wait for key */
 	return 0;
 }
 
 void setup_game(void){
-	// seed random number generator with the current time
+	/* seed random number generator with the current time */
 	srand((unsigned int)time(NULL));
 
-	// clear the board
+	/* clear the board */
 	memset(board, 0, sizeof(board));
-	// reset the score
+	/* reset the score */
 	score = 0;
 
-	// add two random tiles
+	/* add two random tiles */
 	(void) add_random_tile();
 	(void) add_random_tile();
 }
@@ -168,17 +168,17 @@ NUMBER random_spawn_value(void){
 }
 
 void move_board(MOVE_DIRECTION direction, NUMBER* dst_board, SCORE* dst_score){
-	//store which cells have already been merged so we don't do it twice
-	unsigned char merged[BOARD_AREA]; // a little faster than bit packing because shifting would take time
+	/* store which cells have already been merged so we don't do it twice */
+	unsigned char merged[BOARD_AREA]; /* a little faster than bit packing because shifting would take time */
 
 	if(direction == INVALID_DIRECTION) return;
-	// if dst_board is specified, copy the board into there
+	/* if dst_board is specified, copy the board into there */
 	if(dst_board == NULL) dst_board = board;
 	else memcpy(dst_board, board, sizeof(board));
 
 	if(dst_score) *dst_score = score;
 
-	// clear the merged list
+	/* clear the merged list */
 	memset(merged, 0, sizeof(merged));
 
 	switch(direction){
@@ -188,20 +188,20 @@ void move_board(MOVE_DIRECTION direction, NUMBER* dst_board, SCORE* dst_score){
 			for(col=0; col<BOARD_SIZE; col++){
 				for(row=1; row<BOARD_SIZE;row++){
 					if(dst_board[col + row*BOARD_SIZE]){
-						while(row>0 && !dst_board[col + (row-1)*BOARD_SIZE]){ // while above cell is empty
-							// shift up
+						while(row>0 && !dst_board[col + (row-1)*BOARD_SIZE]){ /* while above cell is empty */
+							/* shift up */
 							dst_board[col + (row-1)*BOARD_SIZE] = dst_board[col + row*BOARD_SIZE];
-							dst_board[col + row*BOARD_SIZE] = 0; //clear
+							dst_board[col + row*BOARD_SIZE] = 0; /* clear */
 							row--;
 						}
 						if(row>0 && dst_board[col + (row-1)*BOARD_SIZE] == dst_board[col + row*BOARD_SIZE]
 									&& !merged[col + (row-1)*BOARD_SIZE]){
-							// merge up
-							dst_board[col + (row-1)*BOARD_SIZE] *= 2; // double
-							dst_board[col + row*BOARD_SIZE] = 0; // clear
-							// mark as merged
+							/* merge up */
+							dst_board[col + (row-1)*BOARD_SIZE] *= 2; /* double */
+							dst_board[col + row*BOARD_SIZE] = 0; /* clear */
+							/* mark as merged */
 							merged[col + (row-1)*BOARD_SIZE] = true;
-							// add to score
+							/* add to score */
 							if(dst_score) *dst_score += dst_board[col + (row-1)*BOARD_SIZE];
 						}
 					}
@@ -212,20 +212,20 @@ void move_board(MOVE_DIRECTION direction, NUMBER* dst_board, SCORE* dst_score){
 			for(row=0; row<BOARD_SIZE; row++){
 				for(col=1; col<BOARD_SIZE;col++){
 					if(dst_board[col + row*BOARD_SIZE]){
-						while(col>0 && !dst_board[(col-1) + row*BOARD_SIZE]){ // while left cell is empty
-							// shift left
+						while(col>0 && !dst_board[(col-1) + row*BOARD_SIZE]){ /* while left cell is empty */
+							/* shift left */
 							dst_board[(col-1) + row*BOARD_SIZE] = dst_board[col + row*BOARD_SIZE];
-							dst_board[col + row*BOARD_SIZE] = 0; //clear
+							dst_board[col + row*BOARD_SIZE] = 0; /* clear */
 							col--;
 						}
 						if(col>0 && dst_board[(col-1) + row*BOARD_SIZE] == dst_board[col + row*BOARD_SIZE]
 									&& !merged[(col-1) + row*BOARD_SIZE]){
-							// merge left
-							dst_board[(col-1) + row*BOARD_SIZE] *= 2; // double
-							dst_board[col + row*BOARD_SIZE] = 0; // clear
-							// mark as merged
+							/* merge left */
+							dst_board[(col-1) + row*BOARD_SIZE] *= 2; /* double*/
+							dst_board[col + row*BOARD_SIZE] = 0; /* clear */
+							/* mark as merged */
 							merged[(col-1) + row*BOARD_SIZE] = true;
-							// add to score
+							/* add to score */
 							if(dst_score) *dst_score += dst_board[(col-1) + row*BOARD_SIZE];
 						}
 					}
@@ -236,20 +236,20 @@ void move_board(MOVE_DIRECTION direction, NUMBER* dst_board, SCORE* dst_score){
 			for(col=0; col<BOARD_SIZE; col++){
 				for(row=BOARD_SIZE-2; row>=0;row--){
 					if(dst_board[col + row*BOARD_SIZE]){
-						while(row<BOARD_SIZE-1 && !dst_board[col + (row+1)*BOARD_SIZE]){ // while below cell is empty
-							// shift down
+						while(row<BOARD_SIZE-1 && !dst_board[col + (row+1)*BOARD_SIZE]){ /* while below cell is empty */
+							/* shift down */
 							dst_board[col + (row+1)*BOARD_SIZE] = dst_board[col + row*BOARD_SIZE];
-							dst_board[col + row*BOARD_SIZE] = 0; //clear
+							dst_board[col + row*BOARD_SIZE] = 0; /* clear */
 							row++;
 						}
 						if(row<BOARD_SIZE-1 && dst_board[col + (row+1)*BOARD_SIZE] == dst_board[col + row*BOARD_SIZE]
 									&& !merged[col + (row+1)*BOARD_SIZE]){
-							// merge down
-							dst_board[col + (row+1)*BOARD_SIZE] *= 2; // double
-							dst_board[col + row*BOARD_SIZE] = 0; // clear
-							// mark as merged
+							/* merge down */
+							dst_board[col + (row+1)*BOARD_SIZE] *= 2; /* double */
+							dst_board[col + row*BOARD_SIZE] = 0; /* clear */
+							/* mark as merged */
 							merged[col + (row+1)*BOARD_SIZE] = true;
-							// add to score
+							/* add to score */
 							if(dst_score) *dst_score += dst_board[col + (row+1)*BOARD_SIZE];
 						}
 					}
@@ -260,20 +260,20 @@ void move_board(MOVE_DIRECTION direction, NUMBER* dst_board, SCORE* dst_score){
 			for(row=0; row<BOARD_SIZE; row++){
 				for(col=BOARD_SIZE-2; col>=0;col--){
 					if(dst_board[col + row*BOARD_SIZE]){
-						while(col<BOARD_SIZE-1 && !dst_board[(col+1) + row*BOARD_SIZE]){ // while right cell is empty
-							// shift right
+						while(col<BOARD_SIZE-1 && !dst_board[(col+1) + row*BOARD_SIZE]){ /* while right cell is empty */
+							/* shift right */
 							dst_board[(col+1) + row*BOARD_SIZE] = dst_board[col + row*BOARD_SIZE];
-							dst_board[col + row*BOARD_SIZE] = 0; //clear
+							dst_board[col + row*BOARD_SIZE] = 0; /* clear */
 							col++;
 						}
 						if(col<BOARD_SIZE-1 && dst_board[(col+1) + row*BOARD_SIZE] == dst_board[col + row*BOARD_SIZE]
 									&& !merged[(col+1) + row*BOARD_SIZE]){
-							// merge left
-							dst_board[(col+1) + row*BOARD_SIZE] *= 2; // double
-							dst_board[col + row*BOARD_SIZE] = 0; // clear
-							// mark as merged
+							/* merge left */
+							dst_board[(col+1) + row*BOARD_SIZE] *= 2; /* double */
+							dst_board[col + row*BOARD_SIZE] = 0; /* clear */
+							/* mark as merged */
 							merged[(col+1) + row*BOARD_SIZE] = true;
-							// add to score
+							/* add to score */
 							if(dst_score) *dst_score += dst_board[(col+1) + row*BOARD_SIZE];
 						}
 					}

@@ -21,12 +21,12 @@ typedef unsigned long SCORE;
 typedef char TILE_INDEX;
 typedef TILE_INDEX TILE_COUNT;
 
-typedef unsigned char BOOLEAN; // c does not have bools :(
+typedef unsigned char BOOLEAN; /* c does not have bools :( */
 #ifndef __bool_true_false_are_defined
 #define __bool_true_false_are_defined
 #define true 1
 #define false 0
-#endif // __bool_true_false_are_defined
+#endif /* __bool_true_false_are_defined */
 
 static NUMBER board[BOARD_AREA];
 static SCORE score;
@@ -51,4 +51,4 @@ BOOLEAN will_any_move(MOVE_DIRECTION direction);
 BOOLEAN will_any_merge(MOVE_DIRECTION direction);
 BOOLEAN any_valid_moves(void);
 
-#endif // C2048_H
+#endif /* C2048_H */
