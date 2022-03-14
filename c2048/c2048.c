@@ -1,4 +1,4 @@
-// c2048: An implementation of the game 2048 in C89/C++
+// c2048: An implementation of the game 2048 in C89
 // by DaCukiMonsta
 
 #include <stdio.h>
